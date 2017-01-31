@@ -186,13 +186,11 @@ func (b *Buffer) WriteByte(p byte) error {
 	return nil
 }
 
-func (b *Buffer) WriteTo(w io.Writer) (int64, error) {
-	var (
-		i, n int
-		err  error
-	)
+func (b *Buffer) WriteTo(w io.Writer) (_ int64, err error) {
+	var d, i, n int
+
 	for a, m := 0, len(b.chunk); i < m && err == nil; i++ {
-		d := len(b.chunk[i]) - b.offset
+		d = len(b.chunk[i]) - b.offset
 		a, err = w.Write(b.chunk[i][b.offset:])
 		n += a
 

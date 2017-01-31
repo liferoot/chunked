@@ -120,12 +120,16 @@ func TestBuffer_ReadFrom(t *testing.T) {
 }
 
 func TestBuffer_WriteTo(t *testing.T) {
-	buf, exp, w := NewBuffer(NewPool(8, 16)), bb, bytes.NewBuffer(nil)
+	buf, w := NewBuffer(NewPool(8, 16)), new(bytes.Buffer)
+	exp := bb
 	buf.Write(exp)
 	n, err := buf.WriteTo(w)
 	out := w.Bytes()
 	if err != nil || len(exp) != int(n) || !bytes.Equal(exp, out) {
 		t.Errorf("\n\tfor: %q\n\texp: %q, read: %d, err: <nil>\n\tgot: %q, read: %d, err: %v\n", exp, exp, len(bb), out, n, err)
+	}
+	if buf.Len() > 0 {
+		t.Error(`buffer should be empty`)
 	}
 }
 
