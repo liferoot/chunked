@@ -109,11 +109,9 @@ func (b *Buffer) ReadByte() (byte, error) {
 	return c, nil
 }
 
-func (b *Buffer) ReadFrom(r io.Reader) (int64, error) {
-	var (
-		i, n int
-		err  error
-	)
+func (b *Buffer) ReadFrom(r io.Reader) (_ int64, err error) {
+	var i, n int
+
 	if i = len(b.chunk) - 1; i < 0 {
 		if b.pool == nil {
 			b.pool = &defaultPool
